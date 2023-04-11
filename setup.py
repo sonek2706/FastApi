@@ -8,9 +8,16 @@ setuptools.setup(
     version="0.0.1",
     author="Jan Son Ha",
     author_email="s26092@pjwstk.edu.pl",
-    description="just a package",
+    description="Ecommerce website package",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/sonek2706/my_package",
+    url="https://github.com/sonek2706/Ecommerce-Website",
+    packages=setuptools.find_packages(),
+    classifiers=[
+        "Intended Audience :: Developers",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python :: 3.6",
+        "Typing :: Typed",
+    ],
     python_requires=">=3.6",
 )
