@@ -1,10 +1,17 @@
 import setuptools
 
-with open("README.md") as buffer:
-    long_description = buffer.read()
+
+long_description = "My long description"
+# with open("README.md") as buffer:
+#     long_description = buffer.read()
+
+with open("requirements.txt") as r:
+    lines = r.readlines()
+
+install_requires = list(filter(lambda x: len(x) > 0, map(str.strip, lines)))
 
 setuptools.setup(
-    name="my_package",
+    name="backend",
     version="0.0.1",
     author="Jan Son Ha",
     author_email="s26092@pjwstk.edu.pl",
@@ -20,4 +27,5 @@ setuptools.setup(
         "Typing :: Typed",
     ],
     python_requires=">=3.6",
+    install_requires=install_requires
 )

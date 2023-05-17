@@ -39,35 +39,11 @@ class Customer:
 # print(list(inspect(Product_Customer_association).columns))
 # print(list(inspect(Customer).columns))
 
-DB_URL = "sqlite:///./data.db"
+# DB_URL = "sqlite:///./data.db"
 
-engine = create_engine(DB_URL, connect_args={"check_same_thread": False})
-connection = engine.connect()
+# engine = create_engine(DB_URL, connect_args={"check_same_thread": False})
+# connection = engine.connect()
 
-metadata.create_all(bind=engine)
+# metadata.create_all(bind=engine)
 
-# LEGACY method to use Database First Approach:
-# metadata.reflect(bind=engine)
-
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
-
-# class User(Base):
-#     __tablename__ = "users"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     email = Column(String, unique=True, index=True)
-#     hashed_password = Column(String)
-#     is_active = Column(Boolean, default=True)
-
-#     items = relationship("Item", back_populates="owner")
-
-
-# class Item(Base):
-#     __tablename__ = "items"
-
-#     id = Column(Integer, primary_key=True, index=True)
-#     title = Column(String, index=True)
-#     description = Column(String, index=True)
-#     owner_id = Column(Integer, ForeignKey("users.id"))
-
-#     owner = relationship("User", back_populates="items")
+# SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
