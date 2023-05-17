@@ -1,19 +1,19 @@
-# from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session
 
-# from . import models, schemas
+from api.models import models, schemas
 
+def get_Product(db: Session, product_id: int):
+    return db.query(models.Product).filter(models.Product.id == product_id).first()
 
-# def get_user(db: Session, user_id: int):
-#     return db.query(models.User).filter(models.User.id == user_id).first()
-
-
-# def get_user_by_email(db: Session, email: str):
-#     return db.query(models.User).filter(models.User.email == email).first()
+def get_Customer(db: Session, customer_id: str):
+    return db.query(models.Customer).filter(models.Customer.customer_id == customer_id).first()
 
 
-# def get_users(db: Session, skip: int = 0, limit: int = 100):
-#     return db.query(models.User).offset(skip).limit(limit).all()
+def get_Products(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Product).offset(skip).limit(limit).all()
 
+def get_Customers(db: Session, skip: int = 0, limit: int = 100):
+    return db.query(models.Customer).offset(skip).limit(limit).all()
 
 # def create_user(db: Session, user: schemas.UserCreate):
 #     fake_hashed_password = user.password + "notreallyhashed"

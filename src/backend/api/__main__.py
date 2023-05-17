@@ -1,9 +1,10 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
 
-# from . import crud, models, schemas
-from models import models
-from models.database import SessionLocal, engine
+from api.models import crud, models, schemas
+from api.models.database import SessionLocal, engine
+
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
@@ -15,7 +16,6 @@ def get_db():
     finally:
         db.close()
 
-
 # @app.post("/users/", response_model=schemas.User)
 # def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 #     db_user = crud.get_user_by_email(db, email=user.email)
@@ -24,10 +24,15 @@ def get_db():
 #     return crud.create_user(db=db, user=user)
 
 
-# @app.get("/users/", response_model=list[schemas.User])
-# def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-#     users = crud.get_users(db, skip=skip, limit=limit)
-#     return users
+@app.get("/products/", response_model=list[schemas.Product])
+def read_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    products = crud.get_Products(db, skip=skip, limit=limit)
+    return products
+
+@app.get("/customers/", response_model=list[schemas.Customer])
+def read_customers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    customers = crud.get_Customers(db, skip=skip, limit=limit)
+    return customers
 
 
 # @app.get("/users/{user_id}", response_model=schemas.User)
@@ -49,39 +54,3 @@ def get_db():
 # def read_items(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
 #     items = crud.get_items(db, skip=skip, limit=limit)
 #     return items
-
-
-#=================================================  
-
-# from utils import operations
-
-# # print(operations.add(2,3))
-# # print(operations.subtract(5, 2))
-# # print(operations.multiply(4, 6))
-# # print(operations.divide(10, 5))
-
-# from fastapi import FastAPI
-# from typing import Optional
-
-# app = FastAPI()
-
-# # Path parameters
-# @app.get("/add/{x}/{y}")
-# def add(x : float, y : float) -> float:
-#     return x+y
-
-# # Query parameters
-# @app.get("/increment/{x}")
-# def add(x : int, y : int, z : str | None = None) -> int:
-#     return x+y
-
-    
-# @app.get("/increment/{x}")
-# def add(x : int, y : int, z : Optional[str] = None) -> int:
-#     print(z or "Hello")
-#     return x+y
-
-
-# @app.get("/")
-# async def root():
-#     return {"message": "Hello World"}

@@ -1,35 +1,29 @@
-# from pydantic import BaseModel
+from pydantic import BaseModel
 
+class ProductBase(BaseModel):
+    name: str
+    price: float
+    description: str
 
-# class ItemBase(BaseModel):
-#     title: str
-#     description: str | None = None
+class ProductCreate(ProductBase):
+    pass
 
+class Product(ProductBase):
+    id: int
+    
+    class Config:
+        orm_mode = True
 
-# class ItemCreate(ItemBase):
-#     pass
+class CustomerBase(BaseModel):
+    first_name: str
+    last_name: str
+    email: str
 
+class CustomerCreate(CustomerBase):
+    pass
 
-# class Item(ItemBase):
-#     id: int
-#     owner_id: int
-
-#     class Config:
-#         orm_mode = True
-
-
-# class UserBase(BaseModel):
-#     email: str
-
-
-# class UserCreate(UserBase):
-#     password: str
-
-
-# class User(UserBase):
-#     id: int
-#     is_active: bool
-#     items: list[Item] = []
-
-#     class Config:
-#         orm_mode = True
+class Customer(CustomerBase):
+    id: int
+    
+    class Config:
+        orm_mode = True
