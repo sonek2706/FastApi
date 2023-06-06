@@ -8,8 +8,9 @@ models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+
 def get_db():
-    db = SessionLocal() 
+    db = SessionLocal()
     try:
         yield db
     finally:
@@ -20,6 +21,7 @@ def get_db():
 def read_products(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     products = crud.get_Products(db, skip=skip, limit=limit)
     return products
+
 
 @app.get("/customers/", response_model=list[schemas.Customer])
 def read_customers(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

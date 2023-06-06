@@ -12,6 +12,7 @@ Product_Customer_association = Table(
     Column("quantity", String(50)),
 )
 
+
 class Product(
     MappedAsDataclass, Base, dataclass_callable=pydantic.dataclasses.dataclass
 ):
@@ -20,7 +21,8 @@ class Product(
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column("product_name")
     price: Mapped[float]
-    description:Mapped[str]
+    description: Mapped[str]
+
 
 class Customer(
     MappedAsDataclass, Base, dataclass_callable=pydantic.dataclasses.dataclass
@@ -31,3 +33,4 @@ class Customer(
     first_name: Mapped[str]
     last_name: Mapped[str]
     email: Mapped[str]
+
