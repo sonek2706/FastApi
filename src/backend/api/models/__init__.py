@@ -1,1 +1,1 @@
-from .models import User, mapper_registry, metadata
+from .models import User, Product, mapper_registry, metadata
