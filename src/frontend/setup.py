@@ -11,7 +11,7 @@ with open("requirements.txt") as r:
 install_requires = list(filter(lambda x: len(x) > 0, map(str.strip, lines)))
 
 setuptools.setup(
-    name="backend",
+    name="frontend",
     version="0.0.1",
     author="Jan Son Ha",
     author_email="s26092@pjwstk.edu.pl",
