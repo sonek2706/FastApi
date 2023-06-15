@@ -2,11 +2,14 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+from models import Order
+
 
 # User
 class UserBase(BaseModel):
     username: str
     email: str
+    orders: list[Order]
 
 
 class UserCreate(UserBase):

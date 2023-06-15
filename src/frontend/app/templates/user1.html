@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+    
+    <h1>Users: </h1>
+    {% for user in users %}
+        <li>{{ dict(user) }}</li>
+        <div class="product">
+            <img src="product1.jpg" alt="Product 1">
+            <div class="product-info">
+            <div class="product-title">id: {{ user.id }}, {{ user.username }}</div>
+            <div class="product-description">{{ user.email }}</div>
+            <div class="product-price">{{ user.registration_timestamp }}</div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

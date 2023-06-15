@@ -22,6 +22,7 @@ def create_user(db: Session, user: schemas.UserCreate) -> models.User:
         username=user.username,
         email=user.email,
         registration_timestamp=datetime.now(),
+        orders=[],
     )
 
     db.add(user_model)

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Your E-commerce Website</title>
+  <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Your E-commerce Website</h1>
+  </header>
+  
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Products</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+  </nav>
+  
+  <div class="container">
+      {% block content %}
+      {% endblock %}
+  </div>
+  
+  <footer>
+    &copy; 2023 Your E-commerce Website. All rights reserved.
+  </footer>
+</body>
+</html>
