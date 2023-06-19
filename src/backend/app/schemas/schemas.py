@@ -2,14 +2,12 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
-from models import Order
-
 
 # User
 class UserBase(BaseModel):
     username: str
     email: str
-    orders: list[Order]
+    registration_timestamp: datetime
 
 
 class UserCreate(UserBase):
@@ -17,25 +15,6 @@ class UserCreate(UserBase):
 
 
 class User(UserBase):
-    id: int
-    registration_timestamp: datetime
-
-    class Config:
-        orm_mode = True
-
-
-# Product
-class ProductBase(BaseModel):
-    name: str
-    price: float
-    description: str
-
-
-class ProductCreate(ProductBase):
-    pass
-
-
-class Product(ProductBase):
     id: int
 
     class Config:
@@ -45,13 +24,15 @@ class Product(ProductBase):
 # Order
 class OrderBase(BaseModel):
     total: float
-
-
-class OrderCreate(OrderBase):
     registration_timestamp: datetime
 
 
+class OrderCreate(OrderBase):
+    pass
+
+
 class Order(OrderBase):
+    id: int
     user_id: int
 
     class Config:
@@ -67,8 +48,26 @@ class CategoryCreate(CategoryBase):
     pass
 
 
-class Category(BaseModel):
-    category_idw: int
+class Category(CategoryBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+#  Product
+class ProductBase(BaseModel):
+    name: str
+    price: float
+    description: str | None = None
+
+
+class ProductCreate(ProductBase):
+    category_id: int
+
+
+class Product(ProductBase):
+    id: int
 
     class Config:
         orm_mode = True

@@ -15,8 +15,11 @@ class User:
     email: Mapped[str]
     registration_timestamp: Mapped[datetime]
 
-    orders: Mapped[list["Order"]] = relationship(back_populates="user")
-    id: Mapped[int | None] = mapped_column(
+    orders: Mapped[list["Order"]] = relationship(
+        "Order", backref="User", default_factory=list
+    )
+
+    id: Mapped[int] = mapped_column(
         default_factory=lambda: None, primary_key=True, autoincrement=True
     )
 
@@ -25,10 +28,13 @@ class User:
 class Category:
     __tablename__ = "Category"
 
-    name: Mapped[str] = mapped_column("category_name")
-    products: Mapped[list["Product"]] = relationship(back_populates="category")
+    name: Mapped[str]
 
-    id: Mapped[int | None] = mapped_column(
+    products: Mapped[list["Product"]] = relationship(
+        "Product", backref="Category", default_factory=list
+    )
+
+    id: Mapped[int] = mapped_column(
         default_factory=lambda: None, primary_key=True, autoincrement=True
     )
 
@@ -37,13 +43,13 @@ class Category:
 class Product:
     __tablename__ = "Product"
 
-    name: Mapped[str] = mapped_column("product_name")
+    name: Mapped[str]
     price: Mapped[float]
     description: Mapped[str]
-    cateogory_id: Mapped[int] = mapped_column(ForeignKey("Category.id"))
-    category: Mapped[Category] = relationship(back_populates="products")
 
-    id: Mapped[int | None] = mapped_column(
+    category_id: Mapped[int] = mapped_column(ForeignKey("Category.id"))
+
+    id: Mapped[int] = mapped_column(
         default_factory=lambda: None, primary_key=True, autoincrement=True
     )
 
@@ -56,8 +62,8 @@ class Order:
     registration_timestamp: Mapped[datetime]
 
     user_id: Mapped[int] = mapped_column(ForeignKey("User.id"))
-    user: Mapped[User] = relationship(back_populates="orders")
-    id: Mapped[int | None] = mapped_column(
+
+    id: Mapped[int] = mapped_column(
         default_factory=lambda: None, primary_key=True, autoincrement=True
     )
 

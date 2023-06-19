@@ -9,6 +9,10 @@ import models, schemas
 
 
 # User
+def get_user(id: int, db: Session) -> models.User:
+    return db.get(models.User, id)
+
+
 def get_users(db: Session) -> list[models.User]:
     return list(db.scalars(get_users_query()))
 
@@ -22,7 +26,6 @@ def create_user(db: Session, user: schemas.UserCreate) -> models.User:
         username=user.username,
         email=user.email,
         registration_timestamp=datetime.now(),
-        orders=[],
     )
 
     db.add(user_model)
@@ -33,6 +36,10 @@ def create_user(db: Session, user: schemas.UserCreate) -> models.User:
 
 
 # Product
+def get_product(db: Session, id: int) -> list[models.Product]:
+    return db.get(models.Product, id)
+
+
 def get_products(db: Session) -> list[models.Product]:
     return list(db.scalars(get_products_query()))
 
@@ -41,9 +48,12 @@ def get_products_query() -> Select[Iterable[models.Product]]:
     return select(models.Product)
 
 
-def create_product(db: Session, product: schemas.ProductCreate) -> models.Product:
+def create_product(db: Session, data: schemas.ProductCreate) -> models.Product:
     product_model = models.Product(
-        name=product.name, price=product.price, description=product.description
+        name=data.name,
+        price=data.price,
+        description=data.description,
+        category_id=data.category_id,
     )
 
     db.add(product_model)
@@ -76,6 +86,10 @@ def create_order(db: Session, order: schemas.OrderCreate) -> models.Order:
 
 
 # Category
+def get_category(db: Session, id: int) -> models.Category:
+    return db.get(models.Category, id)
+
+
 def get_categories(db: Session) -> list[models.Category]:
     return list(db.scalars(get_categories_query()))
 

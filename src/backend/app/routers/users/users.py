@@ -8,6 +8,13 @@ from dependencies import get_db
 router = APIRouter()
 
 
+@router.post("/{id}")
+def get_user(id: int, db: Session = Depends(get_db)) -> models.User:
+    user = crud.get_user(id, db)
+
+    return user
+
+
 @router.get("/", response_model=list[schemas.User])
 def get_users(db: Session = Depends(get_db)) -> list[models.User]:
     return crud.get_users(db)

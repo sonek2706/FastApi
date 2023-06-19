@@ -5,7 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.engine import Connection, Engine
 from sqlalchemy.orm import Session, sessionmaker
 
-DB_URL = "sqlite:///my.db"
+DB_URL = "sqlite:///data.db"
 
 
 @dataclass
