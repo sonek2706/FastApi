@@ -8,11 +8,15 @@
     {% for product in products %}
         <div class="product">
             <img src="{{ url_for('static', path='images/product.png') }}">
-            <div class="product-info">
-            <div class="product-title"><a href="http://127.0.0.1:8000/products/detail/{{product.id}}">id: {{ product.id }}, {{ product.name }}</a></div>
+            <div class="product-title"><a href="http://127.0.0.1:8000/products/detail/{{product.id}}">{{ product.name }}</a></div>
             <div class="product-description">Desription: {{ product.description }}</div>
             <div class="product-price">Price: {{ product.price }}$</div>
-            </div>
         </div>
     {% endfor %}
+
+    <script>
+        function myFunction() {
+          alert("Added to cart!");
+        }
+    </script>
 {% endblock %}

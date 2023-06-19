@@ -8,6 +8,11 @@ from dependencies import get_db
 router = APIRouter()
 
 
+@router.post("/{id}", response_model=schemas.Order)
+def get_orders(id: int, db: Session = Depends(get_db)) -> models.Order:
+    return crud.get_order(id, db)
+
+
 @router.get("/", response_model=list[schemas.Order])
 def get_orders(db: Session = Depends(get_db)) -> list[models.Order]:
     return crud.get_orders(db)

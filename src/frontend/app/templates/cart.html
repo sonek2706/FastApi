@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %} 
+
+<section class="cart">
+    <h1>Your Shopping Cart</h1>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% for product in products %}
+
+        <tr>
+          <td>{{product.name}}</td>
+          <td>{{product.price}}$</td>
+          <td>2</td>
+          <td>$39.98</td>
+        </tr>
+
+        {% endfor %}
+        <!-- Add more rows for additional products in the cart -->
+      </tbody>
+    </table>
+
+    <div class="cart-total">
+      <p>Total: {{ order.total }}$</p>
+      <a href="#" class="checkout-btn">Proceed to Checkout</a>
+    </div>
+</section>
+
+<style>
+    /* Reset some default styles */
+    body, h1, h2, h3, p, ul, li, table {
+        margin: 0;
+        padding: 0;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+    }
+    
+    header {
+        background-color: #333;
+        padding: 10px;
+    }
+    
+    nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+    
+    nav ul li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+    
+    nav ul li a {
+        color: #fff;
+        text-decoration: none;
+        font-size: 16px;
+    }
+    
+    .cart {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cart h1 {
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+    
+    table th, table td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    table th {
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+

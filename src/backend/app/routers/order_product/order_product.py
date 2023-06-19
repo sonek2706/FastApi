@@ -8,7 +8,7 @@ from dependencies import get_db
 router = APIRouter()
 
 
-@router.get("/{id}", response_model=list[schemas.OrderProduct])
+@router.post("/{id}", response_model=list[schemas.OrderProduct])
 def get_orders(id: int, db: Session = Depends(get_db)) -> list[models.OrderProduct]:
     return crud.get_products_from_Order(id, db)
 

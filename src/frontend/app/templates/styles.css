@@ -59,7 +59,7 @@ h1 {
 
 /* Product listing styles */
 .product {
-  display: flex;
+  display: inline-block;
   margin-bottom: 20px;
   border: 1px solid #ddd;
   padding: 10px;
@@ -71,6 +71,12 @@ h1 {
   margin-right: 20px;
   object-fit: cover;
 }
+
+.product-image img {
+  max-width: 400px;
+  max-height: 400px;
+}
+
 
 .product-info {
   flex-grow: 1;
@@ -112,4 +118,31 @@ footer {
 
 .btn:hover {
   background-color: #555555;
+}
+
+.add-to-cart-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart-btn:hover {
+  background-color: #555;
+}
+
+.quantity {
+  margin-bottom: 20px;
+}
+
+.quantity label {
+  font-weight: bold;
+}
+
+.quantity input {
+  width: 60px;
+  padding: 5px;
 }

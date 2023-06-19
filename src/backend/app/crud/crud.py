@@ -106,6 +106,10 @@ def create_product(db: Session, data: schemas.ProductCreate) -> models.Product:
 
 
 # Order
+def get_order(id: int, db: Session) -> models.Order:
+    return db.query(models.Order).filter(models.Order.id == id).first()
+
+
 def get_orders(db: Session) -> list[models.Order]:
     return list(db.scalars(get_orders_query()))
 
