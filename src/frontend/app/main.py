@@ -14,6 +14,23 @@ app.mount("/static", StaticFiles(directory="templates"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
+@app.get("/login", response_class=HTMLResponse)
+def index(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse(
+        "login.html", {"request": request}
+    )
+
+@app.post("/login", response_class=HTMLResponse)
+def login(username: Annotated[str, Form()], password: Annotated[str, Form()], request: Request) -> HTMLResponse:
+    
+    # request_login = UserLogin(username=username, email=email)
+    # response = requests.post("http://localhost:8001/users", json=request_user.dict())
+    # response_user = parse_raw_as(User, response.text)
+
+    return templates.TemplateResponse(
+        "login.html", {"request": request}
+    )
+
 
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request) -> HTMLResponse:
