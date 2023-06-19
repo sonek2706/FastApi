@@ -14,6 +14,7 @@ class User:
     username: Mapped[str]
     email: Mapped[str]
     registration_timestamp: Mapped[datetime]
+    password: Mapped[str] #Hashed
 
     orders: Mapped[list["Order"]] = relationship(
         "Order", backref="User", default_factory=list
@@ -49,6 +50,10 @@ class Product:
 
     category_id: Mapped[int] = mapped_column(ForeignKey("Category.id"))
 
+    orderProducts: Mapped[list["OrderProduct"]] = relationship(
+        "OrderProduct", backref="Product", default_factory=list
+    )
+
     id: Mapped[int] = mapped_column(
         default_factory=lambda: None, primary_key=True, autoincrement=True
     )
@@ -63,16 +68,33 @@ class Order:
 
     user_id: Mapped[int] = mapped_column(ForeignKey("User.id"))
 
+    orderProducts: Mapped[list["OrderProduct"]] = relationship(
+        "OrderProduct", backref="Order", default_factory=list
+    )
+
     id: Mapped[int] = mapped_column(
         default_factory=lambda: None, primary_key=True, autoincrement=True
     )
 
 
-Product_Customer_association = Table(
-    "Order_Item",
-    metadata,
-    Column("id", Integer, primary_key=True),
-    Column("order_id", ForeignKey("Order.id")),
-    Column("product_id", ForeignKey("Product.id")),
-    Column("quantity", String(50)),
-)
+# Order_Product_association = Table(
+#     "Order_Product",
+#     metadata,
+#     Column("id", Integer, primary_key=True),
+#     Column("order_id", ForeignKey("Order.id")),
+#     Column("product_id", ForeignKey("Product.id")),
+#     Column("quantity", Integer),
+# )
+
+@mapper_registry.mapped_as_dataclass
+class OrderProduct:
+    __tablename__ = "OrderProduct"
+
+    quantity: Mapped[int]
+
+    order_id: Mapped[int] = mapped_column(ForeignKey("Order.id"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("Product.id"))
+
+    id: Mapped[int] = mapped_column(
+        default_factory=lambda: None, primary_key=True, autoincrement=True
+    )

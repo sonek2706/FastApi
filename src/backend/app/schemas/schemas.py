@@ -6,34 +6,18 @@ from pydantic import BaseModel
 # User
 class UserBase(BaseModel):
     username: str
-    email: str
-    registration_timestamp: datetime
 
 
 class UserCreate(UserBase):
-    pass
-
-
-class User(UserBase):
-    id: int
-
-    class Config:
-        orm_mode = True
-
-
-# Order
-class OrderBase(BaseModel):
-    total: float
+    email: str
+    password: str
     registration_timestamp: datetime
 
 
-class OrderCreate(OrderBase):
-    pass
-
-
-class Order(OrderBase):
+class User(UserBase):
+    email: str
+    registration_timestamp: datetime
     id: int
-    user_id: int
 
     class Config:
         orm_mode = True
@@ -67,6 +51,41 @@ class ProductCreate(ProductBase):
 
 
 class Product(ProductBase):
+    id: int
+
+    class Config:
+        orm_mode = True
+
+
+# Order
+class OrderBase(BaseModel):
+    total: float
+    registration_timestamp: datetime
+
+
+class OrderCreate(OrderBase):
+    user_id: int
+
+
+class Order(OrderBase):
+    user_id: int
+    id: int
+
+    class Config:
+        orm_mode = True
+
+# Order Product
+class OrderProductBase(BaseModel):
+    order_id: int
+    product_id: int
+    quantity: int
+
+
+class OrderProductCreate(OrderProductBase):
+    pass
+
+
+class OrderProduct(OrderProductBase):
     id: int
 
     class Config:

@@ -2,16 +2,15 @@ from fastapi import Depends
 from fastapi.routing import APIRouter
 from sqlalchemy.orm import Session
 
+
 import crud, schemas, models
 from dependencies import get_db
 
 router = APIRouter()
 
-
 @router.post("/{id}")
 def get_user(id: int, db: Session = Depends(get_db)) -> models.User:
     user = crud.get_user(id, db)
-
     return user
 
 
