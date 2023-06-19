@@ -14,11 +14,10 @@ app.mount("/static", StaticFiles(directory="templates"), name="static")
 
 templates = Jinja2Templates(directory="templates")
 
-# @app.get("/login", response_class=HTMLResponse)
-# def index(request: Request) -> HTMLResponse:
-#     return templates.TemplateResponse(
-#         "login.html", {"request": request}
-#     )
+# Login
+@app.get("/login", response_class=HTMLResponse)
+def index(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse("login.html", {"request": request})
 
 # @app.post("/login", response_class=HTMLResponse)
 # def login(username: Annotated[str, Form()], password: Annotated[str, Form()], request: Request) -> HTMLResponse:
