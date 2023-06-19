@@ -6,20 +6,20 @@ from pydantic import BaseModel
 # User
 class UserBase(BaseModel):
     username: str
-    email: str
-    registration_timestamp: datetime
-
 
 class UserCreate(UserBase):
     pass
 
-
 class User(UserBase):
     id: int
+    email: str
+    registration_timestamp: datetime
 
     class Config:
         orm_mode = True
 
+class Credentials(UserBase):
+    password: str
 
 #  Product
 class ProductBase(BaseModel):

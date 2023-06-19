@@ -82,6 +82,10 @@ def get_products(db: Session) -> list[models.Product]:
     return list(db.scalars(get_products_query()))
 
 
+def get_products_for_category(category_id: int, db: Session) -> list[models.Product]:
+    return db.query(models.Product).filter(models.Product.category_id == category_id).all()
+
+
 def get_products_query() -> Select[Iterable[models.Product]]:
     return select(models.Product)
 

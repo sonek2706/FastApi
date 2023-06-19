@@ -1,5 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
-    
+<section class="hero">
+    <div class="hero-content">
+      <h1>Welcome to FastApi Store</h1>
+      <p>Find the best products for all your needs</p>
+    </div>
+</section>
+
+{% for category in categories%}
+    <a href="http://127.0.0.1:8000/products/{{category.id}}" class="btn"><h2>{{category.name}}</h2></a>
+{% endfor %}
     
 {% endblock %}
