@@ -33,19 +33,36 @@ def get_users_query() -> Select[Iterable[models.User]]:
     return select(models.User)
 
 
-def create_user(db: Session, user: schemas.UserCreate) -> models.User:
-    user_model = models.User(
-        username=user.username,
-        email=user.email,
-        password=user.password,
-        registration_timestamp=datetime.now(),
-    )
+def login(credentials: schemas.UserCredentials, db: Session) -> Response:
+    user = db.query(models.User).filter(models.User.username == credentials.username).first()
+    
+    if user is None:
+        return Response(status_code=404)    
+    
+    if user.password != credentials.password:
+        return Response(status_code=401)
+    
+    return Response(status_code=200)
 
-    db.add(user_model)
-    db.commit()
-    db.refresh(user_model)
 
-    return user_model
+def create_user(db: Session, user: schemas.UserCreate) -> Response:
+    tmp = db.query(models.User).filter(models.User.username == user.username or models.User.email == user.email ).first()
+
+    if tmp is None:
+        user_model = models.User(
+            username=user.username,
+            email=user.email,
+            password=user.password,
+            registration_timestamp=datetime.now(),
+        )
+
+        db.add(user_model)
+        db.commit()
+        db.refresh(user_model)
+        return Response(status_code=200)
+    else:
+        return Response(status_code=409)
+    
 
 
 # Category

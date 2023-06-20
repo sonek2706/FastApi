@@ -1,4 +1,4 @@
-from fastapi import Depends
+from fastapi import Depends, Response
 from fastapi.routing import APIRouter
 from sqlalchemy.orm import Session
 
@@ -19,6 +19,11 @@ def get_users(db: Session = Depends(get_db)) -> list[models.User]:
     return crud.get_users(db)
 
 
-@router.post("/", response_model=schemas.User)
-def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)) -> models.User:
+@router.post("/login")
+def login(user: schemas.UserCredentials, db: Session = Depends(get_db)) -> Response:
+    return crud.login(user, db)
+
+
+@router.post("/")
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)) -> Response:
     return crud.create_user(db, user)
