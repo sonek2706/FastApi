@@ -8,12 +8,12 @@ from dependencies import get_db
 router = APIRouter()
 
 
-@router.get("/detail/{id}", response_model=schemas.Product)
+@router.get("/detail/{id}/", response_model=schemas.Product)
 def get_product(id: int, db: Session = Depends(get_db)) -> models.Product:
     return crud.get_product(db, id)
 
 
-@router.get("/{category_id}", response_model=list[schemas.Product])
+@router.get("/{category_id}/", response_model=list[schemas.Product])
 def get_products(category_id: int, db: Session = Depends(get_db)) -> list[models.Product]:
     return crud.get_products_for_category(category_id,db)
 

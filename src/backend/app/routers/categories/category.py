@@ -8,7 +8,7 @@ from dependencies import get_db
 router = APIRouter()
 
 
-@router.get("/{id}", response_model=schemas.Category)
+@router.get("/{id}/", response_model=schemas.Category)
 def get_category(db: Session = Depends(get_db), id: int = 1) -> models.Category:
     return crud.get_category(db, id)
 

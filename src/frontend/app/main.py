@@ -1,5 +1,3 @@
-from typing import Annotated
-
 import requests
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import HTMLResponse
@@ -7,12 +5,17 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import parse_raw_as
 
-from schemas import User, UserCreate, Product, Credentials, Category, OrderProduct, Order
+from schemas import User, UserCreate, Product, Credentials, Category, OrderProductCreate, Order
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="templates"), name="static")
 
 templates = Jinja2Templates(directory="templates")
+
+# Sign up
+@app.get("/register", response_class=HTMLResponse)
+def index(request: Request) -> HTMLResponse:
+    return templates.TemplateResponse("sign_u.html", {"request": request})
 
 # Login
 @app.get("/login", response_class=HTMLResponse)
@@ -34,7 +37,7 @@ def index(request: Request) -> HTMLResponse:
 # Home page
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request) -> HTMLResponse:
-    response = requests.get("http://localhost:8001/categories")
+    response = requests.get("http://localhost:8001/categories/")
     response_categories = parse_raw_as(list[Category], response.text)
     return templates.TemplateResponse("home.html", {"request": request, "categories": response_categories})
 
@@ -42,7 +45,7 @@ def index(request: Request) -> HTMLResponse:
 # Users
 @app.get("/users", response_class=HTMLResponse)
 def index(request: Request) -> HTMLResponse:
-    response = requests.get("http://localhost:8001/users")
+    response = requests.get("http://localhost:8001/users/")
     response_users = parse_raw_as(list[User], response.text)
     return templates.TemplateResponse(
         "user.html", {"request": request, "users": response_users}
@@ -62,9 +65,9 @@ def index(request: Request) -> HTMLResponse:
 
 
 # Product details
-@app.get("/products/detail/{product_id}", response_class=HTMLResponse)
+@app.get("/products/detail/{product_id}/", response_class=HTMLResponse)
 def index(request: Request, product_id: int) -> HTMLResponse:
-    response = requests.get(f"http://127.0.0.1:8001/products/detail/{product_id}")
+    response = requests.get(f"http://127.0.0.1:8001/products/detail/{product_id}/")
 
     response_product = parse_raw_as(Product, response.text)
     return templates.TemplateResponse(
@@ -74,19 +77,19 @@ def index(request: Request, product_id: int) -> HTMLResponse:
 # Products 
 @app.get("/products", response_class=HTMLResponse)
 def index(request: Request) -> HTMLResponse:
-    response = requests.get("http://localhost:8001/products")
+    response = requests.get("http://localhost:8001/products/")
     response_products = parse_raw_as(list[Product], response.text)
     return templates.TemplateResponse(
         "products.html", {"request": request, "products": response_products}
     )
 
 # Products of a category
-@app.get("/products/{category_id}", response_class=HTMLResponse)
+@app.get("/products/{category_id}/", response_class=HTMLResponse)
 def index(request: Request, category_id: int) -> HTMLResponse:
-    response = requests.get(f"http://localhost:8001/products/{category_id}")
+    response = requests.get(f"http://localhost:8001/products/{category_id}/")
     response_products= parse_raw_as(list[Product], response.text)
 
-    response = requests.get(f"http://localhost:8001/categories/{category_id}")
+    response = requests.get(f"http://localhost:8001/categories/{category_id}/")
     response_category = parse_raw_as(Category, response.text)
 
     print(response_category)
@@ -100,23 +103,48 @@ import json
 def index(request: Request) -> HTMLResponse:
 
     # Get the first user
-    response = requests.post("http://localhost:8001/users/1")
+    response = requests.post("http://localhost:8001/users/1/")
     
     # Get last users order
     user = json.loads(response.text)
     order_id = user["orders"][-1]["id"]
 
-    response = requests.post(f"http://localhost:8001/orders/{order_id}")
+    response = requests.post(f"http://localhost:8001/orders/{order_id}/")
     order = parse_raw_as(Order, response.text)
 
-    response = requests.post(f"http://localhost:8001/order_product/{order_id}")
+    response = requests.post(f"http://localhost:8001/order_product/{order_id}/")
     order_products = json.loads(response.text)
     products = []
     for i in range(len(order_products)):
         id = order_products[i]["product_id"]
-        response = requests.get(f"http://localhost:8001/products/detail/{id}")
+        response = requests.get(f"http://localhost:8001/products/detail/{id}/")
         response_product = parse_raw_as(Product, response.text)
         products.append(response_product)
 
     return templates.TemplateResponse("cart.html", {"request": request, "order": order, "order_products": order_products, "products": products})
+
+
+@app.get("/add-to-cart/{product_id}/{quantity}/")
+def index(product_id: int, quantity: int, request: Request) -> HTMLResponse:
+
+    # Get the first user
+    response = requests.post("http://localhost:8001/users/1/")
+    
+    # Get last users order
+    user = json.loads(response.text)
+    order_id = user["orders"][-1]["id"]
+
+    order_product = OrderProductCreate(
+        order_id=order_id,
+        product_id=product_id,
+        quantity=quantity
+    )
+
+    print(order_product.dict())
+
+    requests.post(f"http://localhost:8001/order_product/", json=order_product.dict())
+
+    response = requests.get("http://localhost:8001/categories/")
+    response_categories = parse_raw_as(list[Category], response.text)
+    return templates.TemplateResponse("home.html", {"request": request, "categories": response_categories})
 

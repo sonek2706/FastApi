@@ -1,1 +1,1 @@
-from .schemas import User, UserCreate, Product, Credentials, Category, OrderProduct, Order
+from .schemas import User, UserCreate, Product, Credentials, Category, OrderProductCreate, Order

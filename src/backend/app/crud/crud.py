@@ -109,6 +109,24 @@ def create_product(db: Session, data: schemas.ProductCreate) -> models.Product:
 def get_order(id: int, db: Session) -> models.Order:
     return db.query(models.Order).filter(models.Order.id == id).first()
 
+def update_order(orderUpdate: schemas.OrderUpdate, db: Session) -> Response:
+    order = db.get(models.Order, orderUpdate.id)
+
+    # We should create an order
+    if order is None:
+        orderCreate = schemas.OrderCreate(
+            total=0,
+            registration_timestamp=datetime.now(),
+            user_id=1
+        )
+        order = create_order(orderCreate, db)
+    else:
+        order.total += orderUpdate.total
+
+    db.commit()
+
+    return Response(status_code=200)
+
 
 def get_orders(db: Session) -> list[models.Order]:
     return list(db.scalars(get_orders_query()))
@@ -118,7 +136,7 @@ def get_orders_query() -> Select[Iterable[models.Order]]:
     return select(models.Order)
 
 
-def create_order(db: Session, order: schemas.OrderCreate) -> models.Order:
+def create_order(order: schemas.OrderCreate, db: Session) -> models.Order:
     order_model = models.Order(
         user_id=order.user_id,
         total=order.total,
@@ -138,6 +156,7 @@ def get_products_from_Order(order_id: int, db: Session):
 
 
 def create_order_product(db: Session, data: schemas.OrderProductCreate) -> Response:
+
     order_product = models.OrderProduct(
         order_id=data.order_id,
         product_id=data.product_id,
@@ -147,5 +166,14 @@ def create_order_product(db: Session, data: schemas.OrderProductCreate) -> Respo
     db.add(order_product)
     db.commit()
     db.refresh(order_product)
+
+    product = db.get(models.Product, data.product_id)
+
+    orderUpdate = schemas.OrderUpdate(
+        id=data.order_id,
+        total=data.quantity*product.price
+    )
+    update_order(orderUpdate ,db)
+
 
     return Response(status_code=200)

@@ -18,10 +18,10 @@
         {% for product in products %}
 
         <tr>
-          <td>{{product.name}}</td>
+          <td><a href="http://127.0.0.1:8000/products/detail/{{product.id}}">{{product.name}}</a></td>
           <td>{{product.price}}$</td>
-          <td>2</td>
-          <td>$39.98</td>
+          <td>1</td>
+          <td>{{product.price * 1}}$</td>
         </tr>
 
         {% endfor %}

@@ -60,15 +60,19 @@ class Product(ProductBase):
 # Order
 class OrderBase(BaseModel):
     total: float
-    registration_timestamp: datetime
 
 
 class OrderCreate(OrderBase):
+    registration_timestamp: datetime
     user_id: int
+
+class OrderUpdate(OrderBase):
+    id: int
 
 
 class Order(OrderBase):
     user_id: int
+    registration_timestamp: datetime
     id: int
 
     class Config:
