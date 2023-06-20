@@ -11,7 +11,6 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     email: str
     password: str
-    registration_timestamp: datetime
 
 
 class User(UserBase):
