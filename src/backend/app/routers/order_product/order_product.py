@@ -13,6 +13,12 @@ def get_orders(id: int, db: Session = Depends(get_db)) -> list[models.OrderProdu
     return crud.get_products_from_Order(id, db)
 
 
+@router.delete("/")
+def delete_OrderProduct(
+    order_product: schemas.OrderProductRemove, db: Session = Depends(get_db)
+):
+    return crud.remove_product(order_product.product_id, order_product.order_id ,db)
+
 @router.post("/", response_model=schemas.OrderProduct)
 def create_orders(
     order_product: schemas.OrderProductCreate, db: Session = Depends(get_db)

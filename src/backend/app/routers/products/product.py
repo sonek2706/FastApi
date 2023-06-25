@@ -17,6 +17,9 @@ def get_product(id: int, db: Session = Depends(get_db)) -> models.Product:
 def get_products(category_id: int, db: Session = Depends(get_db)) -> list[models.Product]:
     return crud.get_products_for_category(category_id,db)
 
+@router.get("/cart/{order_id}", response_model=list[schemas.Product])
+def get_cart(order_id: int, db: Session = Depends(get_db)) -> list[models.Product]:
+    return crud.get_cart(order_id, db)
 
 @router.get("/", response_model=list[schemas.Product])
 def get_products(db: Session = Depends(get_db)) -> list[models.Product]:
@@ -27,4 +30,4 @@ def get_products(db: Session = Depends(get_db)) -> list[models.Product]:
 def create_product(
     product: schemas.ProductCreate, db: Session = Depends(get_db)
 ) -> models.Product:
-    return crud.create_product(db, product)
+    return crud.create_product(product, db)

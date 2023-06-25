@@ -27,4 +27,4 @@ def update_order(orderUpdate: schemas.OrderUpdate, db: Session = Depends(get_db)
 def create_orders(
     order: schemas.OrderCreate, db: Session = Depends(get_db)
 ) -> models.Order:
-    return crud.create_order(db, order)
+    return crud.create_order(order, db)

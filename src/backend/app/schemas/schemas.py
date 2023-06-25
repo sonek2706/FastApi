@@ -83,15 +83,17 @@ class Order(OrderBase):
 class OrderProductBase(BaseModel):
     order_id: int
     product_id: int
-    quantity: int
 
 
 class OrderProductCreate(OrderProductBase):
-    pass
+    quantity: int
 
+class OrderProductRemove(OrderProductBase):
+    pass
 
 class OrderProduct(OrderProductBase):
     id: int
+    quantity: int
 
     class Config:
         orm_mode = True

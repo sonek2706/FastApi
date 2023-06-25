@@ -102,12 +102,21 @@ def get_products(db: Session) -> list[models.Product]:
 def get_products_for_category(category_id: int, db: Session) -> list[models.Product]:
     return db.query(models.Product).filter(models.Product.category_id == category_id).all()
 
+def get_cart(order_id: int, db: Session):
+    order_product = db.query(models.OrderProduct).filter(models.OrderProduct.order_id == order_id).all()
+
+    products = []
+    for op in order_product:
+        tmp = db.query(models.Product).filter(models.Product.id == op.product_id).first()
+        products.append(tmp)
+    
+    return products
 
 def get_products_query() -> Select[Iterable[models.Product]]:
     return select(models.Product)
 
 
-def create_product(db: Session, data: schemas.ProductCreate) -> models.Product:
+def create_product(data: schemas.ProductCreate, db: Session) -> models.Product:
     product_model = models.Product(
         name=data.name,
         price=data.price,
@@ -154,6 +163,7 @@ def get_orders_query() -> Select[Iterable[models.Order]]:
 
 
 def create_order(order: schemas.OrderCreate, db: Session) -> models.Order:
+    
     order_model = models.Order(
         user_id=order.user_id,
         total=order.total,
@@ -171,6 +181,23 @@ def create_order(order: schemas.OrderCreate, db: Session) -> models.Order:
 def get_products_from_Order(order_id: int, db: Session):
     return db.query(models.OrderProduct).filter(models.OrderProduct.order_id == order_id).all()
 
+def remove_product(product_id: int, order_id: int, db: Session):
+
+
+    order = db.query(models.Order).filter(models.Order.id == order_id).first()
+    product = db.query(models.Product).filter(models.Product.id == product_id).first()
+    order_product = db.query(models.OrderProduct).filter(models.OrderProduct.product_id == product_id and models.OrderProduct.order_id == order_id).first()
+    
+    order.total -= product.price * order_product.quantity
+
+    db.query(models.OrderProduct).filter(models.OrderProduct.product_id == product_id and models.OrderProduct.order_id == order_id).delete()
+
+    db.commit()
+    db.refresh(order)
+    db.refresh(product)
+    db.refresh(order_product)
+
+    return
 
 def create_order_product(db: Session, data: schemas.OrderProductCreate) -> Response:
 
